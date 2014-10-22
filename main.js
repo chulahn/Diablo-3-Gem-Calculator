@@ -36,8 +36,8 @@ var upgradeCosts = [ [2 , 10 , 0],
 //url used to show img
 var baseUrl="http://media.blizzard.com/d3/icons/items/large/";
 //used when switching gems
-var gemToSearch = "emerald";
-var gemToSearchRegEx = new RegExp(gemToSearch, 'g');
+var gemToSearch = "Emerald";
+var gemToSearchRegEx = new RegExp(gemToSearch.toLowerCase(), 'g');
 
 var gemToCreateHTML = "";
 var creatingFromHTML = "";
@@ -104,7 +104,7 @@ $(document).ready(function() {
 		if ($('.gemToCreateRank.active').size() == 1 && $('.creatingFromRank.active').size() == 1) {
 			finalCost = calculateCost($('#gemToCreateSpan').text() , $('#creatingFromSpan').text());
 			finalCost = intMultArray(finalCost, $('#numOfGems').val());
-			$('#mats').html("<h3>"+$('.creatingFromRank.active').html()+finalCost[0]+" "+$('#creatingFromSpan').text()+" Gems<br /> <img src=\"http://media.blizzard.com/d3/icons/items/large/crafting_looted_reagent_01_demonhunter_male.png\">"+ finalCost[2] + " Death Breath<br /><img src =\"http://www.diablo3wiz.com/32-71-large/800m-diablo-3-normal-mode-gold-usa.jpg\" height=\"75\" width=\"75\">"+finalCost[1]+" gold</h3>");
+			$('#matsDiv').html("<h3>"+$('.creatingFromRank.active').html()+finalCost[0]+" "+$('#creatingFromSpan').text()+" "+gemToSearch+"<br /> <img src=\"http://media.blizzard.com/d3/icons/items/large/crafting_looted_reagent_01_demonhunter_male.png\">"+ finalCost[2] + " Death Breath<br /><img src =\"http://www.diablo3wiz.com/32-71-large/800m-diablo-3-normal-mode-gold-usa.jpg\" height=\"75\" width=\"75\">"+finalCost[1]+" gold</h3>");
 		}
 	});
 
@@ -120,7 +120,7 @@ $(document).ready(function() {
 		if ($('.gemToCreateRank.active').size() == 1 && $('.creatingFromRank.active').size() == 1) {
 			finalCost = calculateCost($('#gemToCreateSpan').text() , $('#creatingFromSpan').text());
 			finalCost = intMultArray(finalCost, $('#numOfGems').val());
-			$('#mats').html("<h3>"+$('.creatingFromRank.active').html()+finalCost[0]+" "+$('#creatingFromSpan').text()+" Gems<br /> <img src=\"http://media.blizzard.com/d3/icons/items/large/crafting_looted_reagent_01_demonhunter_male.png\">"+ finalCost[2] + " Death Breath<br /><img src =\"http://www.diablo3wiz.com/32-71-large/800m-diablo-3-normal-mode-gold-usa.jpg\" height=\"75\" width=\"75\">"+finalCost[1]+" gold</h3>");
+			$('#matsDiv').html("<h3>"+$('.creatingFromRank.active').html()+finalCost[0]+" "+$('#creatingFromSpan').text()+" "+gemToSearch+"<br /> <img src=\"http://media.blizzard.com/d3/icons/items/large/crafting_looted_reagent_01_demonhunter_male.png\">"+ finalCost[2] + " Death Breath<br /><img src =\"http://www.diablo3wiz.com/32-71-large/800m-diablo-3-normal-mode-gold-usa.jpg\" height=\"75\" width=\"75\">"+finalCost[1]+" gold</h3>");
 		}
 	});
 
@@ -130,7 +130,7 @@ $(document).ready(function() {
 			finalCost = intMultArray(finalCost, $('#numOfGems').val());
 
 			$('creatingFromRank active').html()
-			$('#mats').html("<h3>"+$('.creatingFromRank.active').html()+finalCost[0]+" "+$('#creatingFromSpan').text()+" Gems<br /> <img src=\"http://media.blizzard.com/d3/icons/items/large/crafting_looted_reagent_01_demonhunter_male.png\">"+ finalCost[2] + " Death Breath<br /><img src =\"http://www.diablo3wiz.com/32-71-large/800m-diablo-3-normal-mode-gold-usa.jpg\" height=\"75\" width=\"75\">"+finalCost[1]+" gold</h3>");
+			$('#matsDiv').html("<h3>"+$('.creatingFromRank.active').html()+finalCost[0]+" "+$('#creatingFromSpan').text()+" "+gemToSearch+"<br /> <img src=\"http://media.blizzard.com/d3/icons/items/large/crafting_looted_reagent_01_demonhunter_male.png\">"+ finalCost[2] + " Death Breath<br /><img src =\"http://www.diablo3wiz.com/32-71-large/800m-diablo-3-normal-mode-gold-usa.jpg\" height=\"75\" width=\"75\">"+finalCost[1]+" gold</h3>");
 		}
 	})
 
@@ -139,15 +139,22 @@ $(document).ready(function() {
 
 
 function switchGem(gemToSwitchTo) {
-		gemToSwitchTo = gemToSwitchTo.toLowerCase();
+		//replacing text in matsDiv
+		matsDivHTML = $('#matsDiv').html().replace(new RegExp(gemToSearch, 'g') , gemToSwitchTo);
+		//set to replace text in matsDiv next call.
+		gemToSearch = gemToSwitchTo;
 
+
+		gemToSwitchTo = gemToSwitchTo.toLowerCase();
 		//get current HTML and switch gem names to change the images.
 		gemToCreateHTML = $('#gemToCreateDiv').html().replace(gemToSearchRegEx, gemToSwitchTo);
 		creatingFromHTML = $('#creatingFromDiv').html().replace(gemToSearchRegEx, gemToSwitchTo);
+		matsDivHTML = matsDivHTML.replace(gemToSearchRegEx, gemToSwitchTo);
 
 		//set divs to new html
 		$('#gemToCreateDiv').html(gemToCreateHTML);
-		$('#creatingFromDiv').html(creatingFromHTML);	
+		$('#creatingFromDiv').html(creatingFromHTML);
+		$('#matsDiv').html(matsDivHTML);	
 
 		//set regex for the next time switchGem is called.
 		gemToSearchRegEx = new RegExp(gemToSwitchTo, 'g');
