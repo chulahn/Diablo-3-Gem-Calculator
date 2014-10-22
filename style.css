@@ -23,3 +23,8 @@
 	width : 400px;
 	margin: 0 auto;
 }
+div.ui-input-text { 
+	width: 50%; 
+	left:25%;
+	position:relative;
+}
