@@ -1,0 +1,25 @@
+@charset "utf-8";
+/* CSS Document */
+
+.center {
+	text-align:center
+}
+.gemChooser {
+	display:inline-block;
+}
+.box {
+	display:inline-block;	
+	overflow : auto;
+	width : 80%;
+}
+.active {
+	opacity : 1;	
+}
+.inactive {
+	opacity : .5;
+}
+#gemTypes {
+	overflow : auto;
+	width : 400px;
+	margin: 0 auto;
+}
